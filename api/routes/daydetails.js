@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const Daydetail = require("../models/Daydetail");
 
-router.post("/daydetails", async(req,res)=>{
+router.post("/postdaydetails", async(req,res)=>{
     try {
         const { username, day, baseprice, bpUptoKm, additionalprice, tmf1, tmf2, tmf3, waitcharge } = req.body;
         const existingDay = await Daydetail.findOne({ day });
@@ -42,4 +42,30 @@ router.post("/daydetails", async(req,res)=>{
     }
 });
 
+// GET day details
+router.get("/getdaydetails/:id", async(req,res)=>{
+    try {
+        console.log("get request received");
+        const day = await Daydetail.findById(req.params.id);
+        console.log(day)
+        const { username, ...others} = day._doc;
+        res.status(200).json(others);
+    } catch (err) {
+        res.status(500).json(err)
+    }
+});
+
+
+// GET all days in DB
+
+router.get("/getdays", async(req,res)=>{
+    try {
+        console.log("get all days request received");
+        const alldays = await Daydetail.find();
+        console.log(alldays)
+        res.status(200).json(alldays);
+    } catch (err) {
+        res.status(500).json(err)
+    }
+});
 module.exports = router;

@@ -1,0 +1,17 @@
+
+.formbox{
+    display: flex;
+    flex-direction: column;
+    color: beige;
+}
+
+.ans{
+    color: green;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+
+input,select {
+    color: beige;
+}
