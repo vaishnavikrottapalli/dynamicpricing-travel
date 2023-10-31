@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './modulebuilder.css';
 import {Link} from 'react-router-dom';
+import axios from 'axios';
 
 export default function Modulebuilder() {
 
@@ -21,11 +22,27 @@ export default function Modulebuilder() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log(formData);
-    const price = calculatePrice(formData);    
-    console.log('Calculated Price:', price);
+    console.log(formData);   
+    const newDay = {
+      username: formData.uname,
+      day: formData.day,
+      baseprice: parseFloat(formData.baseprice),
+      bpUptoKm: parseFloat(formData.bpUptoKm),
+      additionalprice: parseFloat(formData.additionalprice),
+      tmf1: parseFloat(formData.tmf1),
+      tmf2: parseFloat(formData.tmf2),
+      tmf3: parseFloat(formData.tmf3),
+      waitcharge: parseFloat(formData.waitcharge),
+    };
+    console.log("new data is: "+JSON.stringify(newDay));
+    try {
+      const res = await axios.post("http://localhost:5000/day/postdaydetails", newDay);
+      console.log("Data posted successfully:", res.data);
+    } catch (err) {
+      console.error("Error posting data:", err);
+    }
   };
 
   const calculatePrice = (data) => {
